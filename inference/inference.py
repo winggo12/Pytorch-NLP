@@ -67,8 +67,8 @@ def emotion(pred ,label_dict):
 
 if __name__ == '__main__':
     input = ["i am happy"]
-    model, tokenizer = load_model_tokenizer(model_path="../data_preprocessing/model",
-                                            tokenizer_path="../data_preprocessing/tokenizer/")
+    model, tokenizer = load_model_tokenizer(model_path="../trainer/model",
+                                            tokenizer_path="../trainer/tokenizer/")
     pred = inference(model, tokenizer, input)
     emotion = emotion(pred, labels)
     print(emotion)

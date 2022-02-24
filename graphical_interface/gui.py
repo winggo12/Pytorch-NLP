@@ -27,8 +27,8 @@ class Window(QMainWindow):
 
     def init_nlp(self):
         device_name = 'cpu'
-        model, tokenizer = load_model_tokenizer(model_path="../data_preprocessing/model/",
-                                                tokenizer_path="../data_preprocessing/tokenizer/")
+        model, tokenizer = load_model_tokenizer(model_path="../trainer/model/",
+                                                tokenizer_path="../trainer/tokenizer/")
         labels = {
             0: "anger",
             1: "fear",
