@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from preprocessing import get_data_loader
 
-from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay, classification_report
+from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay, classification_report,precision_recall_fscore_support
 
 from config import config
 from utils.utils import progress_bar, plot_final_acc_loss, classification_report_csv
@@ -100,7 +100,15 @@ def train(train_dataset, val_dataset):
                 plt.savefig(f"{dataset_type}_ConfusionMatrix.jpg")
                 plt.close()
 
-    y(train_val_acc_loss_dict)
+                prfs = precision_recall_fscore_support(running_label[dataset_type],
+                                                running_prediction[dataset_type],
+                                                average=None)
+                print(prfs)
+                with open(dataset_type+'_prfs.txt', 'w') as f:
+                    f.write(str(prfs))
+                    f.close()
+
+    plot_final_acc_loss(train_val_acc_loss_dict)
 
     return model
 
@@ -121,10 +129,12 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     df_train = pd.read_csv("../data/train.txt",
                            delimiter=';', names=['sentence', 'label'])
-    df_test = pd.read_csv("../data/test_data.txt",
-                          delimiter=';', names=['sentence', 'label'])
+    # df_train = df_train[:1000]
+    # df_test = pd.read_csv("../data/test_data.txt",
+    #                       delimiter=';', names=['sentence', 'label'])
     df_val = pd.read_csv("../data/val.txt",
                          delimiter=';', names=['sentence', 'label'])
+    # df_val = df_val[:500]
     train_dataset, val_dataset, tokenizer = get_data_loader(df_train, df_val)
     model = train(train_dataset, val_dataset)
     save_model(model, tokenizer)

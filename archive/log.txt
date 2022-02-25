@@ -1,0 +1,35 @@
+Handling dataset:  train
+Handling dataset:  val
+Epoch Number:  1
+[ train dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.8594375, loss: 0.41807940747216343
+[ val dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.941, loss: 0.14256180822849274
+Epoch Number:  2
+[ train dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.9438125, loss: 0.13346885000530165
+[ val dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.939, loss: 0.0963088721036911
+Epoch Number:  3
+[ train dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.957875, loss: 0.09612026774638797
+[ val dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.937, loss: 0.23780418932437897
+Epoch Number:  4
+[ train dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.9715625, loss: 0.07084806190384552
+[ val dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.933, loss: 0.0007069047424010932
+Epoch Number:  5
+[ train dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.979375, loss: 0.05128404334341758
+(array([0.98792383, 0.95667686, 0.98509965, 0.94930876, 0.99230605, 0.93084112]),
+array([0.98517832, 0.96902426, 0.98638568, 0.94785276, 0.99507072, 0.87062937]),
+array([0.98654917, 0.96281098, 0.98574224, 0.9485802 , 0.99368646, 0.899729  ]),
+array([2159, 1937, 5362, 1304, 4666,  572]))
+[ val dataset]
+ Progress: [------------------> ] 99 %(dataset_type) acc: 0.9345, loss: 0.005255126394331455
+(array([0.95167286, 0.8957346 , 0.94893617, 0.84530387, 0.95691203,0.8961039 ]),
+array([0.93090909, 0.89150943, 0.95028409, 0.85955056, 0.96909091,0.85185185]),
+array([0.94117647, 0.89361702, 0.94960965, 0.85236769, 0.96296296,0.87341772]),
+array([275, 212, 704, 178, 550,  81]))
