@@ -3,7 +3,12 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
+import os
 import sys
+
+root_path = os.path.abspath(os.getcwd())
+print("Current Working Directory: ", root_path)
+sys.path.append(root_path)
 from inference.inference import load_model_tokenizer, inference, emotion
 
 class Window(QMainWindow):
@@ -27,8 +32,8 @@ class Window(QMainWindow):
 
     def init_nlp(self):
         device_name = 'cpu'
-        model, tokenizer = load_model_tokenizer(model_path="../trainer/model/",
-                                                tokenizer_path="../trainer/tokenizer/")
+        model, tokenizer = load_model_tokenizer(model_path="../trainer/model",
+                                                tokenizer_path="../trainer/tokenizer")
         labels = {
             0: "anger",
             1: "fear",

@@ -13,7 +13,7 @@ import pandas as pd
 
 class Dataset():
     def __init__(self, dataset_type, data_frame, attention_masks, batch_size=16):
-        self.type = dataset_type
+        self.dataset_type = dataset_type
         self.data_frame = data_frame
         self.attention_masks = attention_masks
         self.batch_size = batch_size
@@ -28,24 +28,25 @@ def get_data_loader(df_train, df_val):
     for dataset in [train_dataset, val_dataset]:
         df = dataset.data_frame
         print("Handling dataset: ", dataset.dataset_type)
-        labels = df['label'].unique()
         df.rename(columns={'label': 'label_name'}, inplace=True)
         df['label'] = labelencoder.fit_transform(df['label_name'])
-        print(df)
+        # print(df)
 
         sentences = df.sentence.values
-        print("Distribution of data based on labels: ", df.label.value_counts())
+        # print("Distribution of data based on labels: ", df.label.value_counts())
         MAX_LEN = 256
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', do_lower_case=True)
         tokenized_inputs = []
         for sentence in sentences:
             tokenized_inputs.append(
-                tokenizer.encode(sentence, add_special_tokens=True, max_length=MAX_LEN, pad_to_max_length=True))
+                tokenizer.encode(sentence, add_special_tokens=True,
+                                 max_length=MAX_LEN, pad_to_max_length=True,
+                                 truncation=True))
 
         labels = df.label.values
 
-        print("Actual sentence before tokenization: ", sentences[2])
-        print("Encoded Input from dataset: ", tokenized_inputs[2])
+        # print("Actual sentence before tokenization: ", sentences[2])
+        # print("Encoded Input from dataset: ", tokenized_inputs[2])
 
         ## Create attention mask
         attention_masks = []
@@ -59,17 +60,17 @@ def get_data_loader(df_train, df_val):
             attention_masks.append(attention_mask)
 
         # attention_masks = [[float(i > 0) for i in seq] for seq in tokenized_inputs]
-
+        attention_masks = torch.tensor(attention_masks)
         dataset.attention_masks = attention_masks
         inputs = torch.tensor(tokenized_inputs)
         labels = torch.tensor(labels)
 
         tensor_dataset = TensorDataset(inputs, attention_masks, labels)
         random_sampler = RandomSampler(tensor_dataset)
-        data_loader = DataLoader(tensor_dataset, sampler=random_sampler, batch_size=tensor_dataset.batch_size)
+        data_loader = DataLoader(tensor_dataset, sampler=random_sampler, batch_size=dataset.batch_size)
         dataset.data_loader = data_loader
 
-    return train_dataset.data_loader, val_dataset.data_loader
+    return train_dataset, val_dataset, tokenizer
 
 
 if __name__ == '__main__':
