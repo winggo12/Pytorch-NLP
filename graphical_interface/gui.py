@@ -1,4 +1,9 @@
-# importing libraries
+## This file has the following class
+## 1. Window(QMainWindow)
+## The main GUI is defined in this class, run this python file
+## to open the GUI.
+
+
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui
 from PyQt5.QtGui import *
@@ -18,16 +23,9 @@ class Window(QMainWindow):
         super().__init__()
 
         self.model, self.tokenizer, self.labels = self.init_nlp()
-        # setting title
         self.setWindowTitle("Emotional Analysis of Text")
-
-        # setting geometry
         self.setGeometry(100, 100, 480, 480)
-
-        # calling method
         self.UiComponents()
-
-        # showing all the widgets
         self.show()
 
     def init_nlp(self):
@@ -44,21 +42,13 @@ class Window(QMainWindow):
         }
         return model, tokenizer, labels
 
-    # method for components
+
     def UiComponents(self):
-        # creating a QLineEdit object
         sentence_input = QLineEdit("Enter you Sentence in here: (e.g. I am happy)", self)
-
-        # setting geometry
         sentence_input.setGeometry(80, 40, 300, 40)
-
-        # creating a label
         emotion_label = QLabel("Sentence's Emotion will be displayed in here", self)
 
-        # setting geometry to the label
         emotion_label.setGeometry(80, 80, 300, 60)
-
-        # setting word wrap property of label
         emotion_label.setWordWrap(True)
 
         img_label = QLabel(self)
@@ -66,15 +56,10 @@ class Window(QMainWindow):
         pixmap = QPixmap('./image/emotion.jpg')
         pixmap = pixmap.scaled(300, 300, QtCore.Qt.KeepAspectRatio)
         img_label.setPixmap(pixmap)
-
-        # adding action to the line edit when enter key is pressed
         sentence_input.returnPressed.connect(lambda: do_action())
 
-        # method to do action
         def do_action():
-            # getting text from the line edit
             value = sentence_input.text()
-
             input = [str(value)]
             pred = inference(self.model, self.tokenizer, input)
             feeling = emotion(pred, self.labels)
@@ -90,11 +75,6 @@ if __name__ == '__main__':
     # emotion = emotion(pred, labels)
     # print(emotion)
 
-    # create pyqt5 app
     App = QApplication(sys.argv)
-
-    # create the instance of our Window
     window = Window()
-
-    # start the app
     sys.exit(App.exec())

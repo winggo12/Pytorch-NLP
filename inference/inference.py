@@ -1,13 +1,12 @@
+##This file contains the following functions:
+##1. load_model_tokenizer( model_path, tokenizer_path) , for loading the model and tokenizer by the path
+##2. inference(model, tokenizer, input), for inferencing one single input with cpu
+##3. emotion(pred ,label_dict), for changing label index to label ("0" --> "joy")
+##4. batch_inference(model, tokenizer, inputs), for inferencing more than one input with cpu
+
 import torch
-from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
-import torch.nn.functional as F
 from transformers import BertTokenizer, BertConfig, BertModel, AdamW, BertForSequenceClassification,get_linear_schedule_with_warmup
-
-
-import pandas as pd
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 
 def load_model_tokenizer( model_path, tokenizer_path):

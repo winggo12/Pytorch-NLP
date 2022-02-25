@@ -1,8 +1,11 @@
+## This file has the following funcstions
+## 1. get_dataset(df_train, df_val)
+## By inputting the dataframe of train and validation
+## Return dataset class that include dataloader of train and validation
+
 import torch
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
-import torch.nn.functional as F
-from transformers import BertTokenizer, BertConfig, AdamW, BertForSequenceClassification, \
-    get_linear_schedule_with_warmup
+from transformers import BertTokenizer
 
 from sklearn.preprocessing import LabelEncoder
 
@@ -20,7 +23,7 @@ class Dataset():
         self.data_loader = None
 
 
-def get_data_loader(df_train, df_val):
+def get_dataset(df_train, df_val):
     attention_masks = []
     train_dataset = Dataset("train", df_train, attention_masks)
     val_dataset = Dataset("val", df_val, attention_masks)
@@ -81,4 +84,4 @@ if __name__ == '__main__':
     df_val = pd.read_csv("../data/val.txt",
                          delimiter=';', names=['sentence', 'label'])
 
-    train_data_loader, test_data_loader = get_data_loader(df_train, df_val)
+    train_dataset, val_dataset, tokenizer = get_dataset(df_train, df_val)

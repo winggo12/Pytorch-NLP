@@ -1,10 +1,14 @@
+## This file has the following funcstions
+## 1. train(train_dataset, val_dataset), train model with two dataset, return a pytorch model
+## 2. save_model(model, tokenizer), save the model and tokenizer to the folder named "model" and "tokenizer"
+
 import torch
 from transformers import BertTokenizer, BertConfig,AdamW, BertForSequenceClassification,get_linear_schedule_with_warmup
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from preprocessing import get_data_loader
+from preprocessing import get_dataset
 
 from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay, classification_report,precision_recall_fscore_support
 
@@ -135,6 +139,6 @@ if __name__ == '__main__':
     df_val = pd.read_csv("../data/val.txt",
                          delimiter=';', names=['sentence', 'label'])
     # df_val = df_val[:500]
-    train_dataset, val_dataset, tokenizer = get_data_loader(df_train, df_val)
+    train_dataset, val_dataset, tokenizer = get_dataset(df_train, df_val)
     model = train(train_dataset, val_dataset)
     save_model(model, tokenizer)
