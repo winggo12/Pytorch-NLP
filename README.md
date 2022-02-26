@@ -5,8 +5,7 @@ This repo is field tested on Ubuntu 16.04, RTX 3070 GPU
 Demo Video:
 https://youtu.be/eORfhaLjZts
     
-[![NLP](archive/screenshot.jpg)](https://youtu.be/eORfhaLjZts
- "Everything Is AWESOME")
+ <img src="./archive/screenshot.jpg" width="480" height="480" /> 
 
 ## 1. Requirement of Environment 
 Please create a virtual environment via conda or other method
@@ -79,8 +78,10 @@ After running the command , the
 - results and other metrics --> saved in ./trainer
 
 Result showcase
+
 - Accuracy and Loss / Confusion Matrix 
 <img src="./trainer/Accuracy_and_Loss.jpg" width="480" height="320" /> 
+
 - Confusion Matrix 
 <img src="./trainer/val_ConfusionMatrix.jpg" width="480" height="320" />
 
@@ -109,7 +110,6 @@ This command requires trained model and tokenizer, if the model and tokenizer fo
 Command: 
 
       python graphical_interface/gui.py
-- 
       
   
 
