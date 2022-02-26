@@ -12,7 +12,16 @@ from sklearn.preprocessing import LabelEncoder
 labelencoder = LabelEncoder()
 
 import pandas as pd
+import os
+import sys
 
+root_path = os.path.abspath(os.getcwd())
+path_list = root_path.split("/")
+index = path_list.index('Pytorch-NLP')
+parent_path = ""
+for i in range(index + 1): parent_path += (path_list[i] + "/")
+# print("Parent Directory: "+parent_path)
+sys.path.append(parent_path)
 
 class Dataset():
     def __init__(self, dataset_type, data_frame, attention_masks, batch_size=16):
@@ -77,11 +86,11 @@ def get_dataset(df_train, df_val):
 
 
 if __name__ == '__main__':
-    df_train = pd.read_csv("../data/train.txt",
+    df_train = pd.read_csv(parent_path + "data/train.txt",
                            delimiter=';', names=['sentence', 'label'])
-    df_test = pd.read_csv("../data/test_data.txt",
-                          delimiter=';', names=['sentence', 'label'])
-    df_val = pd.read_csv("../data/val.txt",
+    # df_test = pd.read_csv(parent_path + "data/test_data.txt",
+    #                       delimiter=';', names=['sentence', 'label'])
+    df_val = pd.read_csv(parent_path + "data/val.txt",
                          delimiter=';', names=['sentence', 'label'])
 
     train_dataset, val_dataset, tokenizer = get_dataset(df_train, df_val)

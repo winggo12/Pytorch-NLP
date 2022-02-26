@@ -7,7 +7,16 @@
 import torch
 from transformers import BertTokenizer, BertConfig, BertModel, AdamW, BertForSequenceClassification,get_linear_schedule_with_warmup
 import numpy as np
+import os
+import sys
 
+root_path = os.path.abspath(os.getcwd())
+path_list = root_path.split("/")
+index = path_list.index('Pytorch-NLP')
+parent_path = ""
+for i in range(index + 1): parent_path += (path_list[i] + "/")
+# print("Parent Directory: "+parent_path)
+sys.path.append(parent_path)
 
 def load_model_tokenizer( model_path, tokenizer_path):
     model =BertForSequenceClassification.from_pretrained(model_path)
@@ -95,8 +104,8 @@ if __name__ == '__main__':
         5: "surprise"
     }
     input = ["i am happy"]
-    model, tokenizer = load_model_tokenizer(model_path="../trainer/model",
-                                            tokenizer_path="../trainer/tokenizer/")
+    model, tokenizer = load_model_tokenizer(model_path=parent_path+"trainer/model",
+                                            tokenizer_path=parent_path+"trainer/tokenizer/")
     pred = inference(model, tokenizer, input)
     emotion = emotion(pred, labels)
     print(emotion)

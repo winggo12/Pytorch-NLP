@@ -12,9 +12,19 @@ from preprocessing import get_dataset
 
 from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay, classification_report,precision_recall_fscore_support
 
+import os
+import sys
+
+root_path = os.path.abspath(os.getcwd())
+path_list = root_path.split("/")
+index = path_list.index('Pytorch-NLP')
+parent_path = ""
+for i in range(index + 1): parent_path += (path_list[i] + "/")
+# print("Parent Directory: "+parent_path)
+sys.path.append(parent_path)
+
 from config import config
 from utils.utils import progress_bar, plot_final_acc_loss, classification_report_csv
-
 
 def train(train_dataset, val_dataset):
     learning_rate = config.learning_rate
@@ -95,20 +105,20 @@ def train(train_dataset, val_dataset):
                 cr = classification_report(running_label[dataset_type], running_prediction[dataset_type],
                                            output_dict=True)
                 df = pd.DataFrame(cr).transpose()
-                df.to_csv(f"./{dataset_type}_classification_report.csv")
+                df.to_csv(parent_path + "trainer/" + f"{dataset_type}_classification_report.csv")
                 # print(cr)
                 cm = confusion_matrix(running_label[dataset_type], running_prediction[dataset_type])
                 # print(cm)
                 disp = ConfusionMatrixDisplay(confusion_matrix=cm)
                 disp.plot()
-                plt.savefig(f"{dataset_type}_ConfusionMatrix.jpg")
+                plt.savefig(parent_path + "trainer/" + f"{dataset_type}_ConfusionMatrix.jpg")
                 plt.close()
 
                 prfs = precision_recall_fscore_support(running_label[dataset_type],
                                                 running_prediction[dataset_type],
                                                 average=None)
                 print(prfs)
-                with open(dataset_type+'_prfs.txt', 'w') as f:
+                with open(parent_path + "trainer/" + dataset_type+'_prfs.txt', 'w') as f:
                     f.write(str(prfs))
                     f.close()
 
@@ -117,26 +127,18 @@ def train(train_dataset, val_dataset):
     return model
 
 def save_model(model, tokenizer):
-    model_save_folder = 'model/'
-    tokenizer_save_folder = 'tokenizer/'
-    path_model = './' + model_save_folder
-    path_tokenizer = './' + tokenizer_save_folder
-
-    model.save_pretrained(path_model)
-    tokenizer.save_pretrained(path_tokenizer)
-
-    model_save_name = 'fineTuneModel.pt'
-    path = path_model = './' + model_save_folder + '/' + model_save_name
+    model.save_pretrained(parent_path + 'trainer/model/')
+    tokenizer.save_pretrained(parent_path + 'trainer/tokenizer/')
+    path = parent_path + 'trainer/model/fineTuneModel.pt'
     torch.save(model.state_dict(), path)
 
 if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    df_train = pd.read_csv("../data/train.txt",
+    df_train = pd.read_csv(parent_path + "data/train.txt",
                            delimiter=';', names=['sentence', 'label'])
     # df_train = df_train[:1000]
-    # df_test = pd.read_csv("../data/test_data.txt",
-    #                       delimiter=';', names=['sentence', 'label'])
-    df_val = pd.read_csv("../data/val.txt",
+
+    df_val = pd.read_csv(parent_path + "data/val.txt",
                          delimiter=';', names=['sentence', 'label'])
     # df_val = df_val[:500]
     train_dataset, val_dataset, tokenizer = get_dataset(df_train, df_val)

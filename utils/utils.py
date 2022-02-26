@@ -1,6 +1,17 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 import time
+
+def get_parent_folder_path():
+    root_path = os.path.abspath(os.getcwd())
+    path_list = root_path.split("/")
+    index = path_list.index('Pytorch-NLP')
+    parent_path = ""
+    for i in range(index + 1): parent_path += (path_list[i] + "/")
+    #print("Parent Directory: "+parent_path)
+    return parent_path
+
 
 def classification_report_csv(report, save_path):
     report_data = []

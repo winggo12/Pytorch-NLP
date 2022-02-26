@@ -12,8 +12,13 @@ import os
 import sys
 
 root_path = os.path.abspath(os.getcwd())
-print("Current Working Directory: ", root_path)
-sys.path.append(root_path)
+path_list = root_path.split("/")
+index = path_list.index('Pytorch-NLP')
+parent_path = ""
+for i in range(index + 1): parent_path += (path_list[i] + "/")
+# print("Parent Directory: "+parent_path)
+sys.path.append(parent_path)
+
 from inference.inference import load_model_tokenizer, inference, emotion
 
 class Window(QMainWindow):
@@ -30,8 +35,8 @@ class Window(QMainWindow):
 
     def init_nlp(self):
         device_name = 'cpu'
-        model, tokenizer = load_model_tokenizer(model_path="../trainer/model",
-                                                tokenizer_path="../trainer/tokenizer")
+        model, tokenizer = load_model_tokenizer(model_path=parent_path + "trainer/model",
+                                                tokenizer_path=parent_path + "trainer/tokenizer")
         labels = {
             0: "anger",
             1: "fear",
@@ -53,7 +58,7 @@ class Window(QMainWindow):
 
         img_label = QLabel(self)
         img_label.setGeometry(80, 140, 300, 300)
-        pixmap = QPixmap('./image/emotion.jpg')
+        pixmap = QPixmap(parent_path + 'graphical_interface/image/emotion.jpg')
         pixmap = pixmap.scaled(300, 300, QtCore.Qt.KeepAspectRatio)
         img_label.setPixmap(pixmap)
         sentence_input.returnPressed.connect(lambda: do_action())
@@ -65,7 +70,7 @@ class Window(QMainWindow):
             feeling = emotion(pred, self.labels)
             print(feeling)
             emotion_label.setText(str(feeling))
-            pixmap = QPixmap('./image/' + str(feeling) + '.jpg')
+            pixmap = QPixmap(parent_path + 'graphical_interface/image/' + str(feeling) + '.jpg')
             pixmap = pixmap.scaled(300, 300, QtCore.Qt.KeepAspectRatio)
             img_label.setPixmap(pixmap)
 
